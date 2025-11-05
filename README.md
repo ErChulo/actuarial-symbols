@@ -1,6 +1,3 @@
-# Actuarial Symbols
-
-````markdown
 # International Actuarial Symbols - Web Components Library
 
 A web components library for displaying **actuarial symbols** with MathML, including life annuities, insurances, premiums, reserves, probabilities, and commutation functions.  
@@ -189,11 +186,3 @@ Commutation functions: `D, N, C, M, S, R`.
 
 ---
 
-🎯 **Library loaded successfully!**
-
-```
-
-This is **a single Markdown file** — no splits, no multiple files — everything in one `README.md`.  
-
-If you want, I can also **append a full “demo table” showing every component visually in HTML** directly inside the Markdown. It would make it immediately testable in a browser. Do you want me to do that?
-```
