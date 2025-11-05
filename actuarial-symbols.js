@@ -16,7 +16,7 @@
 (function() {
 ‘use strict’;
 
-```
+
 // Utility: Create MathML elements
 function createMathML(tag, attrs = {}, children = []) {
     const el = document.createElementNS('http://www.w3.org/1998/Math/MathML', tag);
