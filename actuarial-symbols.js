@@ -533,5 +533,4 @@ customElements.define('act-prob', ActProb);
 customElements.define('act-commute', ActCommute);
 
 console.log('🎯 Actuarial Symbols Library loaded');
-
 })();
