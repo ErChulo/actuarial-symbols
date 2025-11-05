@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actuarial Symbols - Web Components Library</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .hero h1 {
+            margin: 0 0 20px 0;
+            font-size: 48px;
+        }
+        .hero p {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+        .install {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .install h2 {
+            margin-top: 0;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #c7254e;
+        }
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .example {
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .render {
+            font-size: 24px;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 4px;
+        }
+        .code-block {
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #667eea;
+            color: white;
+        }
+        tr:hover {
+            background: #f5f5f5;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>🎯 Actuarial Symbols</h1>
+        <p>International actuarial notation as web components using MathML</p>
+        <p style="font-size: 16px; margin-top: 20px;">
+            Drop-in library • Zero dependencies • Native browser rendering
+        </p>
+    </div>
+
+```
+<div class="install">
+    <h2>🚀 Quick Start</h2>
+    <p>Add one line to your HTML and start using actuarial symbols:</p>
+    <pre>&lt;script src="https://cdn.jsdelivr.net/gh/yourusername/actuarial-symbols@main/actuarial-symbols.js"&gt;&lt;/script&gt;</pre>
+    
+    <p style="margin-top: 20px;"><strong>Then use anywhere in your HTML:</strong></p>
+    <pre>&lt;p&gt;The premium is &lt;act-premium benefit="A" age="x:n"&gt;&lt;/act-premium&gt;&lt;/p&gt;</pre>
+    
+    <p class="render">The premium is <act-premium benefit="A" age="x:n"></act-premium></p>
+</div>
+
+<div class="section">
+    <h2>📚 Component Reference</h2>
+
+    <h3>1. Generic Symbol <code>&lt;act-symbol&gt;</code></h3>
+    <p>The most flexible component. Implements the full 4-corner notation.</p>
+    
+    <table>
+        <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td><code>symbol</code></td>
+            <td>Main symbol (required)</td>
+            <td>"A", "a", "E", "p", "q"</td>
+        </tr>
+        <tr>
+            <td><code>lr</code></td>
+            <td>Lower-right subscript (required)</td>
+            <td>"x", "xy", "x:n"</td>
+        </tr>
+        <tr>
+            <td><code>ll</code></td>
+            <td>Lower-left subscript</td>
+            <td>"n", "k", "t"</td>
+        </tr>
+        <tr>
+            <td><code>ul</code></td>
+            <td>Upper-left superscript</td>
+            <td>"1", "2"</td>
+        </tr>
+        <tr>
+            <td><code>ur</code></td>
+            <td>Upper-right superscript</td>
+            <td>"(m)", "{1}"</td>
+        </tr>
+        <tr>
+            <td><code>p</code></td>
+            <td>Premium/Reserve wrapper</td>
+            <td>"P", "V", "W"</td>
+        </tr>
+        <tr>
+            <td><code>decoration</code></td>
+            <td>Symbol decoration</td>
+            <td>"bar", "ddot", "ring"</td>
+        </tr>
+        <tr>
+            <td><code>precedence</code></td>
+            <td>JSON array for precedence numbers</td>
+            <td>[{pos:0,num:1}]</td>
+        </tr>
+        <tr>
+            <td><code>last-survivor</code></td>
+            <td>Apply overline (boolean)</td>
+            <td>-</td>
+        </tr>
+    </table>
+
+    <div class="example">
+        <div class="render">
+            <act-symbol symbol="A" lr="x"></act-symbol>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-symbol symbol="A" lr="x"&gt;&lt;/act-symbol&gt;</pre>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="render">
+            <act-symbol ll="n" ul="2" symbol="A" lr="x" ur="(m)"></act-symbol>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-symbol ll="n" ul="2" symbol="A" lr="x" ur="(m)"&gt;&lt;/act-symbol&gt;</pre>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="render">
+            <act-symbol symbol="A" lr="xyz" precedence='[{"pos":2,"num":2}]'></act-symbol>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-symbol symbol="A" lr="xyz" precedence='[{"pos":2,"num":2}]'&gt;&lt;/act-symbol&gt;</pre>
+        </div>
+    </div>
+
+    <h3>2. Annuities <code>&lt;act-annuity&gt;</code> <span class="badge">SHORTCUT</span></h3>
+    
+    <table>
+        <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+        </tr>
+        <tr><td><code>age</code></td><td>Status (e.g., "x", "x:n", "xy")</td></tr>
+        <tr><td><code>type</code></td><td>"due" (ä), "immediate" (a), "continuous" (ā)</td></tr>
+        <tr><td><code>term</code></td><td>Optional term duration</td></tr>
+        <tr><td><code>defer</code></td><td>Optional deferral period</td></tr>
+        <tr><td><code>frequency</code></td><td>e.g., "(m)" for mthly</td></tr>
+    </table>
+
+    <div class="example">
+        <div class="render">
+            <act-annuity age="x:n" type="due"></act-annuity>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-annuity age="x:n" type="due"&gt;&lt;/act-annuity&gt;</pre>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="render">
+            <act-annuity age="x" type="continuous" defer="n"></act-annuity>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-annuity age="x" type="continuous" defer="n"&gt;&lt;/act-annuity&gt;</pre>
+        </div>
+    </div>
+
+    <h3>3. Insurance <code>&lt;act-insurance&gt;</code> <span class="badge">SHORTCUT</span></h3>
+    
+    <table>
+        <tr>
+            <th>Attribute</th>
+            <th>Description</th>
+        </tr>
+        <tr><td><code>age</code></td><td>Status</td></tr>
+        <tr><td><code>type</code></td><td>"whole", "term", "endowment", "pure-endowment"</td></tr>
+        <tr><td><code>payment</code></td><td>"eoy" (end of year), "continuous"</td></tr>
+        <tr><td><code>term</code></td><td>Term duration</td></tr>
+        <tr><td><code>frequency</code></td><td>Payment frequency</td></tr>
+    </table>
+
+    <div class="example">
+        <div class="render">
+            <act-insurance age="x" type="term" term="n"></act-insurance>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-insurance age="x" type="term" term="n"&gt;&lt;/act-insurance&gt;</pre>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="render">
+            <act-insurance age="x:n" type="endowment" payment="continuous"></act-insurance>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-insurance age="x:n" type="endowment" payment="continuous"&gt;&lt;/act-insurance&gt;</pre>
+        </div>
+    </div>
+
+    <h3>4. Premiums <code>&lt;act-premium&gt;</code> <span class="badge">SHORTCUT</span></h3>
+    
+    <div class="example">
+        <div class="render">
+            <act-premium benefit="A" age="x:n"></act-premium>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-premium benefit="A" age="x:n"&gt;&lt;/act-premium&gt;</pre>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="render">
+            <act-premium benefit="A" age="x" payment="continuous" duration="h"></act-premium>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-premium benefit="A" age="x" payment="continuous" duration="h"&gt;&lt;/act-premium&gt;</pre>
+        </div>
+    </div>
+
+    <h3>5. Reserves <code>&lt;act-reserve&gt;</code> <span class="badge">SHORTCUT</span></h3>
+    
+    <div class="example">
+        <div class="render">
+            <act-reserve benefit="A" age="x" duration="k"></act-reserve>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-reserve benefit="A" age="x" duration="k"&gt;&lt;/act-reserve&gt;</pre>
+        </div>
+    </div>
+
+    <h3>6. Probabilities <code>&lt;act-prob&gt;</code> <span class="badge">SHORTCUT</span></h3>
+    
+    <div class="example">
+        <div class="render">
+            <act-prob age="x" time="t" type="survival"></act-prob>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-prob age="x" time="t" type="survival"&gt;&lt;/act-prob&gt;</pre>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="render">
+            <act-prob age="x" time="n" type="mortality" defer="m"></act-prob>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-prob age="x" time="n" type="mortality" defer="m"&gt;&lt;/act-prob&gt;</pre>
+        </div>
+    </div>
+
+    <h3>7. Commutation Functions <code>&lt;act-commute&gt;</code></h3>
+    
+    <div class="example">
+        <div class="render">
+            <act-commute func="D" age="x"></act-commute>,
+            <act-commute func="N" age="x"></act-commute>,
+            <act-commute func="C" age="x"></act-commute>,
+            <act-commute func="M" age="x"></act-commute>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-commute func="D" age="x"&gt;&lt;/act-commute&gt;</pre>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>📝 Real-World Example</h2>
+    <p>Here's a paragraph with inline actuarial symbols:</p>
+    
+    <div style="background: #f9f9f9; padding: 20px; border-radius: 6px; font-size: 18px; line-height: 2;">
+        The annual premium <act-premium benefit="A" age="x:n"></act-premium> for an endowment insurance 
+        can be calculated by dividing the net single premium <act-insurance age="x:n" type="endowment"></act-insurance> 
+        by the present value of a life annuity-due <act-annuity age="x:n" type="due"></act-annuity>. 
+        After <i>k</i> years, the policy reserve is <act-reserve benefit="A" age="x:n" duration="k"></act-reserve>, 
+        which depends on the survival probability <act-prob age="x" time="k" type="survival"></act-prob>.
+    </div>
+
+    <details style="margin-top: 20px;">
+        <summary style="cursor: pointer; font-weight: bold;">Show HTML source</summary>
+        <pre style="margin-top: 10px;">The annual premium &lt;act-premium benefit="A" age="x:n"&gt;&lt;/act-premium&gt; 
+```
+
+for an endowment insurance can be calculated by dividing the net
+single premium <act-insurance age=“x:n” type=“endowment”></act-insurance>
+by the present value of a life annuity-due
+<act-annuity age=“x:n” type=“due”></act-annuity>. After <i>k</i> years,
+the policy reserve is <act-reserve benefit=“A” age=“x:n” duration=“k”></act-reserve>,
+which depends on the survival probability
+<act-prob age=“x” time=“k” type=“survival”></act-prob>.</pre>
+</details>
+</div>
+
+```
+<div class="section">
+    <h2>🎨 Complex Examples</h2>
+    
+    <h3>Last Survivor Insurance</h3>
+    <div class="example">
+        <div class="render">
+            <act-symbol symbol="A" lr="xyz:n" last-survivor></act-symbol>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-symbol symbol="A" lr="xyz:n" last-survivor&gt;&lt;/act-symbol&gt;</pre>
+        </div>
+    </div>
+
+    <h3>Reversionary Annuity</h3>
+    <div class="example">
+        <div class="render">
+            <act-annuity age="x|y" type="due"></act-annuity>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-annuity age="x|y" type="due"&gt;&lt;/act-annuity&gt;</pre>
+        </div>
+    </div>
+
+    <h3>With Precedence Numbers</h3>
+    <div class="example">
+        <div class="render">
+            <act-symbol symbol="A" lr="xyz" precedence='[{"pos":0,"num":1},{"pos":1,"num":2}]'></act-symbol>
+        </div>
+        <div class="code-block">
+            <pre>&lt;act-symbol symbol="A" lr="xyz" 
+```
+
+precedence=’[{“pos”:0,“num”:1},{“pos”:1,“num”:2}]’>
+</act-symbol></pre>
+</div>
+</div>
+</div>
+
+```
+<div class="section">
+    <h2>🔧 GitHub Setup</h2>
+    <ol>
+        <li>Create repo: <code>actuarial-symbols</code></li>
+        <li>Add <code>actuarial-symbols.js</code> (the library file)</li>
+        <li>Add <code>index.html</code> (this demo page)</li>
+        <li>Enable GitHub Pages (Settings → Pages → main branch)</li>
+        <li>Use via CDN:</li>
+    </ol>
+    <pre>https://cdn.jsdelivr.net/gh/yourusername/actuarial-symbols@main/actuarial-symbols.js</pre>
+    <p><strong>Or use raw GitHub URL:</strong></p>
+    <pre>https://raw.githubusercontent.com/yourusername/actuarial-symbols/main/actuarial-symbols.js</pre>
+</div>
+
+<div class="section">
+    <h2>💡 Browser Support</h2>
+    <p>Requires MathML support with <code>&lt;menclose notation="actuarial"&gt;</code>:</p>
+    <ul>
+        <li>✅ <strong>Chrome 109+</strong> (January 2023)</li>
+        <li>✅ <strong>Edge 109+</strong></li>
+        <li>✅ <strong>Firefox</strong> (all recent versions)</li>
+        <li>✅ <strong>Safari</strong> (all recent versions)</li>
+    </ul>
+</div>
+
+<div class="footer">
+    <p>Built with MathML • Based on actuarialsymbol.dtx v1.1</p>
+    <p>Zero dependencies • Native browser rendering • Open source</p>
+</div>
+
+<!-- Load the library -->
+<script src="actuarial-symbols.js"></script>
+```
+
+</body>
+</html>
