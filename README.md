@@ -1,4 +1,4 @@
-Ah! Got it — you want **everything in a single, self-contained Markdown file**, no sections split across multiple files. Here’s the full README as **one Markdown file** you can copy-paste:
+# Actuarial Symbols
 
 ````markdown
 # International Actuarial Symbols - Web Components Library
