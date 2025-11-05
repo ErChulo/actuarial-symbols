@@ -14,7 +14,7 @@
   */
 
 (function() {
-‘use strict’;
+use strict;
 
 
 // Utility: Create MathML elements
