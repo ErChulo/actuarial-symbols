@@ -52,8 +52,16 @@
         }
 
         createAngle(content) {
-            return this.createMathML('menclose', { notation: 'actuarial' }, [
-                this.createMathML('mi', {}, [content])
+            // Polyfill for Chrome's lack of support for <menclose notation="actuarial">.
+            // This manually creates the standard notation which is an overbar covering the term and a vertical line.
+            const innerMrow = this.createMathML('mrow', {}, [
+                this.createMathML('mi', {}, [content]),
+                this.createMathML('mo', { stretchy: 'false' }, ['|'])
+            ]);
+
+            return this.createMathML('mover', {}, [
+                innerMrow,
+                this.createMathML('mo', {}, ['¯']) // Macron symbol for the overbar
             ]);
         }
         
