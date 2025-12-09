@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDN Test for Actuarial Symbols</title>
+    
+    <!-- 
+    Loading the script from the jsDelivr CDN.
+    This link points to the 'latest' version in the main branch of the specified GitHub repository.
+    Replace 'actuarial-symbols' with your actual repository name if it's different.
+    -->
+    <script src="https://cdn.jsdelivr.net/gh/ErChulo/actuarial-symbols@latest/actuarial-symbols.refactored.js"></script>
+
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 2rem auto; }
+        h1 { color: #2c3e50; }
+        .test-case {
+            font-size: 1.5em;
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Actuarial Symbols - CDN Test</h1>
+    <p>This page is a live test to confirm that the <code>actuarial-symbols.refactored.js</code> script can be successfully loaded from the jsDelivr CDN and used on any web page.</p>
+    <p>If you see a properly rendered actuarial formula below, the CDN is working correctly.</p>
+
+    <div class="test-case">
+        <p>A 20-year term insurance for a life aged 35:</p>
+        <act-insurance age="35:20" type="term"></act-insurance>
+    </div>
+
+</body>
+</html>

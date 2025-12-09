@@ -5,13 +5,29 @@ A zero-dependency, drop-in web component library for displaying international ac
 
 This library allows you to write actuarial symbols directly in your HTML using easy-to-read custom elements. The browser handles the rendering via MathML, ensuring high-quality, scalable symbols.
 
-## 🚀 Installation
+## 🚀 Installation & Usage
 
-There are no dependencies or build steps required. Simply include the JavaScript file in your HTML, and you\'re ready to go.
+### Local Development
+
+For testing or local development, simply download `actuarial-symbols.refactored.js` and include it in your project.
 
 ```html
 <script src="actuarial-symbols.refactored.js"></script>
 ```
+
+### ☁️ Production via CDN
+
+For live websites, it is highly recommended to load the script from a CDN. This improves performance and reduces load on your server. Once you push your project to a GitHub repository, you can use [jsDelivr](https://www.jsdelivr.com/) to serve the file directly.
+
+Assuming your GitHub username is **ErChulo** and your repository is named **actuarial-symbols**, you can use the following link:
+
+```html
+<!-- Note: Replace 'actuarial-symbols' with your actual repository name -->
+<script src="https://cdn.jsdelivr.net/gh/ErChulo/actuarial-symbols@latest/actuarial-symbols.refactored.js"></script>
+```
+
+**Note on Versioning:** Using `@latest` is convenient for development as it always pulls the most recent file from your `main` branch. For production environments, it is best practice to lock to a specific release version (e.g., `@1.0.0`) to prevent unexpected changes from breaking your site.
+
 
 ## 💡 Core Concept
 
