@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actuarial Symbols Test</title>
+    <script src="actuarial-symbols.refactored.js"></script>
+    <style>
+        body { font-family: sans-serif; line-height: 1.8; max-width: 800px; margin: 2rem auto; }
+        h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        code { background-color: #f4f4f4; padding: 2px 5px; border-radius: 3px; }
+        .test-case { margin-bottom: 2rem; }
+    </style>
+</head>
+<body>
+
+    <h1>Testing the Refactored Actuarial Symbols Library</h1>
+
+    <div class="test-case">
+        <h2>Annuities</h2>
+        <p>
+            Here is a simple immediate annuity for a life aged x: <act-annuity age="x"></act-annuity>.
+            The code for this is <code>&lt;act-annuity age="x"&gt;&lt;/act-annuity&gt;</code>.
+        </p>
+        <p>
+            An annuity-due is represented with a double-dot: <act-annuity age="x" type="due"></act-annuity>.
+        </p>
+        <p>
+            A continuous annuity has a bar over the symbol: <act-annuity age="x" type="continuous"></act-annuity>.
+        </p>
+        <p>
+            We can also represent a deferred annuity. Here is an annuity deferred for <i>n</i> years for a life aged <i>x</i> with a term of <i>m</i> years: 
+            <act-annuity age="x:m" defer="n"></act-annuity>.
+        </p>
+        <p>
+            A monthly annuity can be shown with a frequency superscript: <act-annuity age="x" frequency="(12)"></act-annuity>.
+        </p>
+    </div>
+
+    <div class="test-case">
+        <h2>Generic Symbols</h2>
+        <p>
+            The <code>&lt;act-symbol&gt;</code> component is the most flexible one. We can create a symbol with all the four corners populated.
+        </p>
+        <p>
+            For example, here is a complex symbol <act-symbol ll="t" ul="k" p="P" symbol="A" lr="x:n" ur="(m)"></act-symbol> which could represent a special type of premium.
+        </p>
+        <p>
+            And here is a symbol with a bar decoration for a continuous case: <act-symbol symbol="A" lr="x" decoration="bar"></act-symbol>.
+        </p>
+    </div>
+    
+    <div class="test-case">
+        <h2>Further Discussion</h2>
+        <p>
+            The equivalence principle is a fundamental concept in actuarial science. It states that the present value of premiums should equal the present value of the expected benefits. 
+        </p>
+        <p>
+            For a whole life insurance of 1 payable at the end of the year of death for a life aged <i>x</i>, the net single premium is <act-symbol symbol="A" lr="x"></act-symbol>. 
+            If this is funded by level annual premiums, the premium is denoted by <act-symbol p="P" symbol="A" lr="x"></act-symbol>.
+            The equivalence equation is:
+        </p>
+        <p style="text-align: center; font-size: 1.2em;">
+            <act-symbol p="P" symbol="A" lr="x"></act-symbol> <act-annuity age="x" type="due"></act-annuity> = <act-symbol symbol="A" lr="x"></act-symbol>
+        </p>
+        <p>
+            From this, we can derive the formula for the annual premium:
+        </p>
+        <p style="text-align: center; font-size: 1.2em;">
+            <act-symbol p="P" symbol="A" lr="x"></act-symbol> = 
+            <math>
+                <mfrac>
+                    <msub><mi>A</mi><mi>x</mi></msub>
+                    <msub><mover><mi>a</mi><mo>¨</mo></mover><mi>x</mi></msub>
+                </mfrac>
+            </math>
+        </p>
+
+    </div>
+
+
+</body>
+</html>
