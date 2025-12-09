@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Actuarial Symbols Test</title>
+    <script src="actuarial-symbols.refactored.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; line-height: 1.8; max-width: 900px; margin: 2rem auto; color: #333; }
+        h1 { border-bottom: 2px solid #007bff; padding-bottom: 10px; color: #007bff; }
+        h2 { border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-top: 2.5rem; }
+        code { background-color: #e9ecef; padding: 3px 6px; border-radius: 4px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+        .test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2rem; align-items: center; }
+        .test-case { display: contents; }
+        .test-case > div { padding: 1rem; border-radius: 5px; background-color: #f8f9fa; }
+        .description { text-align: right; }
+    </style>
+</head>
+<body>
+
+    <h1>Comprehensive Symbol Test Page</h1>
+    <p>This page tests the rendering of all available actuarial symbol components and their attributes.</p>
+
+    <h2>1. Generic Symbol: <code>&lt;act-symbol&gt;</code></h2>
+    <div class="test-grid">
+        <!-- Basic -->
+        <div class="description">Basic whole life insurance</div>
+        <div><act-symbol symbol="A" lr="x"></act-symbol> <code>&lt;act-symbol symbol="A" lr="x"&gt;</code></div>
+
+        <!-- All Corners -->
+        <div class="description">All corners populated</div>
+        <div><act-symbol ll="n" ul="2" symbol="A" lr="x:m" ur="(12)"></act-symbol> <code>&lt;act-symbol ll="n" ul="2" symbol="A" lr="x:m" ur="(12)"&gt;</code></div>
+
+        <!-- Decorations -->
+        <div class="description">Bar decoration (continuous)</div>
+        <div><act-symbol symbol="A" lr="x" decoration="bar"></act-symbol> <code>&lt;act-symbol ... decoration="bar"&gt;</code></div>
+        <div class="description">D-dot decoration (due)</div>
+        <div><act-symbol symbol="a" lr="x" decoration="ddot"></act-symbol> <code>&lt;act-symbol ... decoration="ddot"&gt;</code></div>
+
+        <!-- Precedence -->
+        <div class="description">Precedence (second of 3 lives)</div>
+        <div><act-symbol symbol="A" lr="xyz" precedence='''[{"pos":1,"num":2}]'''></act-symbol> <code>&lt;act-symbol ... precedence='[{"pos":1,"num":2}]'&gt;</code></div>
+
+        <!-- Last Survivor -->
+        <div class="description">Last survivor status</div>
+        <div><act-symbol symbol="a" lr="xy" last-survivor></act-symbol> <code>&lt;act-symbol ... last-survivor&gt;</code></div>
+    </div>
+
+    <h2>2. Annuities: <code>&lt;act-annuity&gt;</code></h2>
+    <div class="test-grid">
+        <div class="description">Immediate</div>
+        <div><act-annuity age="x"></act-annuity> <code>&lt;act-annuity age="x"&gt;</code></div>
+        <div class="description">Due</div>
+        <div><act-annuity age="x" type="due"></act-annuity> <code>&lt;act-annuity age="x" type="due"&gt;</code></div>
+        <div class="description">Continuous</div>
+        <div><act-annuity age="x" type="continuous"></act-annuity> <code>&lt;act-annuity age="x" type="continuous"&gt;</code></div>
+        <div class="description">Term certain</div>
+        <div><act-annuity age="x:n"></act-annuity> <code>&lt;act-annuity age="x:n"&gt;</code></div>
+        <div class="description">Deferred</div>
+        <div><act-annuity age="x" defer="n"></act-annuity> <code>&lt;act-annuity age="x" defer="n"&gt;</code></div>
+        <div class="description">With Frequency</div>
+        <div><act-annuity age="x" type="due" frequency="(12)"></act-annuity> <code>&lt;act-annuity age="x" type="due" frequency="(12)"&gt;</code></div>
+    </div>
+
+    <h2>3. Insurances: <code>&lt;act-insurance&gt;</code></h2>
+    <div class="test-grid">
+        <div class="description">Whole Life (EOY)</div>
+        <div><act-insurance age="x"></act-insurance> <code>&lt;act-insurance age="x"&gt;</code></div>
+        <div class="description">Whole Life (Continuous)</div>
+        <div><act-insurance age="x" payment="continuous"></act-insurance> <code>&lt;act-insurance age="x" payment="continuous"&gt;</code></div>
+        <div class="description">Term Insurance</div>
+        <div><act-insurance age="x:n" type="term"></act-insurance> <code>&lt;act-insurance age="x:n" type="term"&gt;</code></div>
+        <div class="description">Endowment Insurance</div>
+        <div><act-insurance age="x:n" type="endowment"></act-insurance> <code>&lt;act-insurance age="x:n" type="endowment"&gt;</code></div>
+         <div class="description">Pure Endowment</div>
+        <div><act-insurance age="x" term="n" type="pure-endowment"></act-insurance> <code>&lt;act-insurance age="x" term="n" type="pure-endowment"&gt;</code></div>
+    </div>
+
+    <h2>4. Premiums & Reserves: <code>&lt;act-premium&gt;</code> & <code>&lt;act-reserve&gt;</code></h2>
+    <div class="test-grid">
+        <div class="description">Annual Premium</div>
+        <div><act-premium benefit="A" age="x"></act-premium> <code>&lt;act-premium benefit="A" age="x"&gt;</code></div>
+        <div class="description">Continuous Premium</div>
+        <div><act-premium benefit="A" age="x" payment="continuous"></act-premium> <code>&lt;act-premium ... payment="continuous"&gt;</code></div>
+        <div class="description">k-th Premium</div>
+        <div><act-premium benefit="A" age="x:n" duration="k"></act-premium> <code>&lt;act-premium ... duration="k"&gt;</code></div>
+        <div class="description">Annual Reserve</div>
+        <div><act-reserve benefit="A" age="x" duration="k"></act-reserve> <code>&lt;act-reserve benefit="A" age="x" duration="k"&gt;</code></div>
+    </div>
+
+    <h2>5. Probabilities: <code>&lt;act-prob&gt;</code></h2>
+    <div class="test-grid">
+        <div class="description">Survival Probability (t-year)</div>
+        <div><act-prob age="x" time="t" type="survival"></act-prob> <code>&lt;act-prob age="x" time="t"&gt;</code></div>
+        <div class="description">Mortality Probability (t-year)</div>
+        <div><act-prob age="x" time="t" type="mortality"></act-prob> <code>&lt;act-prob ... type="mortality"&gt;</code></div>
+        <div class="description">Deferred Mortality</div>
+        <div><act-prob age="x" time="t" defer="n" type="mortality"></act-prob> <code>&lt;act-prob ... defer="n"&gt;</code></div>
+    </div>
+
+    <h2>6. Commutation Functions: <code>&lt;act-commute&gt;</code></h2>
+    <div class="test-grid">
+        <div class="description">D_x</div>
+        <div><act-commute func="D" age="x"></act-commute> <code>&lt;act-commute func="D" age="x"&gt;</code></div>
+        <div class="description">N_x</div>
+        <div><act-commute func="N" age="x"></act-commute> <code>&lt;act-commute func="N" age="x"&gt;</code></div>
+        <div class="description">C_x</div>
+        <div><act-commute func="C" age="x"></act-commute> <code>&lt;act-commute func="C" age="x"&gt;</code></div>
+        <div class="description">M_x</div>
+        <div><act-commute func="M" age="x"></act-commute> <code>&lt;act-commute func="M" age="x"&gt;</code></div>
+        <div class="description">S_x</div>
+        <div><act-commute func="S" age="x"></act-commute> <code>&lt;act-commute func="S" age="x"&gt;</code></div>
+        <div class="description">R_x</div>
+        <div><act-commute func="R" age="x"></act-commute> <code>&lt;act-commute func="R" age="x"&gt;</code></div>
+    </div>
+
+</body>
+</html>
