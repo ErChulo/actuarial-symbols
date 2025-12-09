@@ -1,188 +1,122 @@
-# International Actuarial Symbols - Web Components Library
 
-A web components library for displaying **actuarial symbols** with MathML, including life annuities, insurances, premiums, reserves, probabilities, and commutation functions.  
+# 🎯 Actuarial Symbols - Web Components Library
 
-Based on `actuarialsymbol.dtx v1.1`.
+A zero-dependency, drop-in web component library for displaying international actuarial notation using native MathML.
 
----
+This library allows you to write actuarial symbols directly in your HTML using easy-to-read custom elements. The browser handles the rendering via MathML, ensuring high-quality, scalable symbols.
 
-## CDN Installation
+## 🚀 Installation
 
-Include the library in your HTML:
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/yourusername/actuarial-symbols@main/actuarial-symbols.js"></script>
-````
-
----
-
-## Components & Usage
-
-### `<act-symbol>`
-
-Generic actuarial symbol with 4-corner notation.
-
-**Attributes:**
-
-| Attribute       | Description                                      |
-| --------------- | ------------------------------------------------ |
-| `ll`            | Lower-left subscript                             |
-| `ul`            | Upper-left superscript                           |
-| `p`             | Premium/Reserve wrapper (P, V, W)                |
-| `symbol`        | Main symbol (required)                           |
-| `lr`            | Lower-right subscript (required)                 |
-| `ur`            | Upper-right superscript                          |
-| `decoration`    | `'bar'`, `'ddot'`, `'ring'`                      |
-| `precedence`    | JSON array: `[{pos: 0, num: 1, top: true}, ...]` |
-| `last-survivor` | Boolean attribute                                |
-
-**Example:**
+There are no dependencies or build steps required. Simply include the JavaScript file in your HTML, and you\'re ready to go.
 
 ```html
-<act-symbol symbol="A" lr="x"></act-symbol>
-<act-symbol symbol="a" ll="i" ul="j" lr="x:n" ur="(m)" decoration="ddot"></act-symbol>
-<act-symbol symbol="P" lr="x" p="P"></act-symbol>
+<script src="actuarial-symbols.refactored.js"></script>
 ```
+
+## 💡 Core Concept
+
+The library works by defining a set of custom HTML elements (Web Components) that represent common actuarial symbols. You use these elements like any other HTML tag, and you configure them using attributes.
+
+For example, to show an annuity-due for a life aged 45, you would write:
+
+```html
+<act-annuity age="45" type="due"></act-annuity>
+```
+
+This is much easier to write and read than the equivalent MathML or LaTeX.
+
+## 📚 Component Reference
+
+Here is a guide to the primary components and their most common attributes.
 
 ---
 
 ### `<act-annuity>`
 
-Life annuity symbols.
+Used for all types of annuities.
 
-**Attributes:**
-
-| Attribute   | Description                                        |
-| ----------- | -------------------------------------------------- |
-| `age`       | Status, e.g., `x`, `x:n`, `xy`                     |
-| `type`      | `'due'` (ä), `'immediate'` (a), `'continuous'` (ā) |
-| `term`      | Optional term duration (overrides if in age)       |
-| `defer`     | Optional deferral period                           |
-| `frequency` | Optional, e.g., `(m)` for monthly                  |
-
-**Example:**
-
-```html
-<act-annuity age="x" type="due"></act-annuity>
-<act-annuity age="x:10" type="continuous" defer="5" frequency="(m)"></act-annuity>
-```
+| Attribute | Description | Example | Renders As |
+| :--- | :--- | :--- | :--- |
+| `age` | The age of the annuitant(s). | `<act-annuity age="x"></act-annuity>` | <act-annuity age="x"></act-annuity> |
+| `type` | The type of annuity. Can be `immediate` (default), `due`, or `continuous`. | `<act-annuity age="x" type="due"></act-annuity>` | <act-annuity age="x" type="due"></act-annuity> |
+| `term` | The term of the annuity, added to the age subscript. | `<act-annuity age="x" term="n"></act-annuity>` | <act-annuity age="x:n"></act-annuity> |
+| `defer` | The deferral period. | `<act-annuity age="x" defer="m"></act-annuity>` | <act-annuity age="x" defer="m"></act-annuity> |
+| `frequency`| Payments per year (e.g., monthly). | `<act-annuity age="x" type="due" frequency="(12)"></act-annuity>` | <act-annuity age="x" type="due" frequency="(12)"></act-annuity> |
+| `age` | Can also handle joint-life status. | `<act-annuity age="xy" type="due"></act-annuity>` | <act-annuity age="xy" type="due"></act-annuity> |
 
 ---
 
 ### `<act-insurance>`
 
-Life insurance symbols.
+Used for life insurance benefits.
 
-**Attributes:**
+| Attribute | Description | Example | Renders As |
+| :--- | :--- | :--- | :--- |
+| `age` | The age of the insured(s). | `<act-insurance age="x"></act-insurance>` | <act-insurance age="x"></act-insurance> |
+| `payment` | Timing of payment. Can be `eoy` (end-of-year, default) or `continuous`. | `<act-insurance age="x" payment="continuous"></act-insurance>` | <act-insurance age="x" payment="continuous"></act-insurance> |
+| `type` | Type of insurance. Can be `whole` (default), `term`, `endowment`, or `pure-endowment`. | `<act-insurance age="x:n" type="term"></act-insurance>` | <act-insurance age="x:n" type="term"></act-insurance> |
 
-| Attribute   | Description                                            |
-| ----------- | ------------------------------------------------------ |
-| `age`       | Status, e.g., `x`, `x:n`                               |
-| `type`      | `'whole'`, `'term'`, `'endowment'`, `'pure-endowment'` |
-| `payment`   | `'eoy'` (end of year) or `'continuous'`                |
-| `term`      | Optional term                                          |
-| `frequency` | Optional, e.g., `(m)`                                  |
+---
 
-**Example:**
+### `<act-premium>` and `<act-reserve>`
 
-```html
-<act-insurance age="x" type="whole"></act-insurance>
-<act-insurance age="x:10" type="term" payment="continuous"></act-insurance>
+Used for premiums and reserves.
+
+| Component | Attribute | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `<act-premium>` | `benefit` | The benefit symbol (e.g., A). | `<act-premium benefit="A" age="x"></act-premium>` |
+| `<act-premium>` | `payment` | `annual` (default) or `continuous`. | `<act-premium benefit="A" age="x" payment="continuous"></act-premium>` |
+| `<act-reserve>` | `duration` | The duration at which the reserve is calculated. | `<act-reserve benefit="A" age="x" duration="k"></act-reserve>` |
+
+---
+
+### 🐲 The Generic `<act-symbol>`
+
+For ultimate flexibility, `<act-symbol>` allows you to construct almost any symbol by controlling its individual parts.
+
+```
+      ul     ur
+        \   /
+     ll--P(S)--lr
 ```
 
----
-
-### `<act-premium>`
-
-Premium symbols `P(benefit)`.
-
-**Attributes:**
-
-| Attribute  | Description                        |
-| ---------- | ---------------------------------- |
-| `benefit`  | The benefit symbol, e.g., `A`, `a` |
-| `age`      | Status                             |
-| `payment`  | `'annual'` or `'continuous'`       |
-| `duration` | Optional, for kth premium          |
+| Attribute | Position | Example |
+| :--- | :--- | :--- |
+| `symbol` | The main symbol (S). | `symbol="A"` |
+| `lr` | **L**ower **R**ight subscript. | `lr="x:n"` |
+| `ur` | **U**pper **R**ight superscript. | `ur="(12)"` |
+| `ll` | **L**ower **L**eft prescript. | `ll="t"` |
+| `ul` | **U**pper **L**eft prescript. | `ul="k"` |
+| `p` | The premium symbol (P). | `p="P"` |
+| `decoration`| Adds a decoration over the symbol. Can be `bar`, `ddot`, or `ring`. | `decoration="bar"` |
+| `last-survivor`| Renders the subscript with a bar over it for last survivor status. | `last-survivor` |
 
 **Example:**
+`<act-symbol ll="t" ul="k" p="P" symbol="A" lr="xy" ur="(m)" decoration="bar" last-survivor></act-symbol>`
+
+---
+
+##  Putting It All Together: An Example
+
+You can combine these components with standard MathML to create complex formulas. Here is the equivalence principle equation:
 
 ```html
-<act-premium benefit="A" age="x:n" payment="annual"></act-premium>
-<act-premium benefit="a" age="x:10" payment="continuous" duration="5"></act-premium>
+<div style="display: flex; align-items: center; justify-content: center; font-size: 1.2em; gap: 0.5em;">
+    <act-premium benefit="A" age="x"></act-premium>
+    <math><mo>&times;</mo></math>
+    <act-annuity age="x" type="due"></act-annuity>
+    <math><mo>=</mo></math>
+    <act-insurance age="x"></act-insurance>
+</div>
 ```
 
----
+## 🌐 Browser Support
 
-### `<act-reserve>`
+This library relies on modern browsers\' native support for MathML Core.
 
-Reserve symbols `V(benefit)`.
+- ✅ **Chrome 109+**
+- ✅ **Edge 109+**
+- ✅ **Firefox (all recent versions)**
+- ✅ **Safari (all recent versions)**
 
-**Attributes:**
-
-| Attribute  | Description                  |
-| ---------- | ---------------------------- |
-| `benefit`  | The benefit symbol           |
-| `age`      | Status                       |
-| `duration` | Time k                       |
-| `payment`  | `'annual'` or `'continuous'` |
-
-**Example:**
-
-```html
-<act-reserve benefit="A" age="x" duration="k"></act-reserve>
-<act-reserve benefit="a" age="x:10" payment="continuous"></act-reserve>
-```
-
----
-
-### `<act-prob>`
-
-Probability symbols `p` (survival) or `q` (mortality).
-
-**Attributes:**
-
-| Attribute | Description                           |
-| --------- | ------------------------------------- |
-| `age`     | Status, e.g., `x`                     |
-| `time`    | Time period, e.g., `t`                |
-| `type`    | `'survival'` (p) or `'mortality'` (q) |
-| `defer`   | Optional deferral                     |
-
-**Example:**
-
-```html
-<act-prob age="x" time="1" type="survival"></act-prob>
-<act-prob age="x" time="5" type="mortality" defer="2"></act-prob>
-```
-
----
-
-### `<act-commute>`
-
-Commutation functions: `D, N, C, M, S, R`.
-
-**Attributes:**
-
-| Attribute | Description                |
-| --------- | -------------------------- |
-| `func`    | Function letter, e.g., `D` |
-| `age`     | Status, e.g., `x`          |
-
-**Example:**
-
-```html
-<act-commute func="D" age="x"></act-commute>
-<act-commute func="C" age="x:10"></act-commute>
-```
-
----
-
-## Notes
-
-* All components use **MathML** internally for proper actuarial notation rendering.
-* Supports **4-corner notation**, **deferred lives**, **last survivor** notation, **decorations** (bar, double dot, ring), and frequency/term specifications.
-* Can be combined to build actuarial tables or formulas in HTML.
-
----
-
+**Note on the "Actuarial Angle":** The `|n` term symbol (annuity-certain) uses a polyfill to ensure it renders consistently across all browsers, as Chrome\'s native support for this specific MathML feature is lacking. The appearance may vary slightly between browsers but will be visually correct.
