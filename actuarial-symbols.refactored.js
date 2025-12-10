@@ -51,14 +51,15 @@
             return el;
         }
 
-        createAngle(content) {
-            // Polyfill for Chrome's lack of support for <menclose notation="actuarial">.
-            // This manually creates the standard notation which is an overbar covering the term and a vertical line.
-            const innerMrow = this.createMathML('mrow', {}, [
-                this.createMathML('mi', {}, [content]),
-                this.createMathML('mo', { stretchy: 'false' }, ['|'])
-            ]);
-
+        createAngle(content, type = 'annuity') {
+            // Creates the term angle, e.g., for n|
+            // Type 'annuity' -> overbar with a pipe: n|
+            // Type 'insurance' -> overbar only: n
+            let mrowChildren = [this.createMathML('mi', {}, [content])];
+            if (type === 'annuity') {
+                 mrowChildren.push(this.createMathML('mo', { stretchy: 'false' }, ['|']));
+            }
+            const innerMrow = this.createMathML('mrow', {}, mrowChildren);
             return this.createMathML('mover', {}, [
                 innerMrow,
                 this.createMathML('mo', {}, ['¯']) // Macron symbol for the overbar
@@ -66,7 +67,7 @@
         }
         
         parseSubscript(text, options = {}) {
-            const { useAngle = true, precedence = [], lastSurvivor = false } = options;
+            const { angleType = 'none', precedence = [], lastSurvivor = false } = options;
 
             if (text.includes('|') && !text.match(/\d+\|/)) {
                 const parts = text.split('|');
@@ -86,12 +87,9 @@
                 for (let i = 1; i < parts.length; i++) {
                     mrow.appendChild(this.createMathML('mo', {}, [':']));
                     const part = parts[i].trim();
-                    if (useAngle && part.match(/^[nmkt]$/)) {
-                        mrow.appendChild(this.createAngle(part));
-                    } else if (part.includes('|')) {
-                        const [num] = part.split('|');
-                        mrow.appendChild(useAngle && num.match(/^[nmkt]$/) ? this.createAngle(num) : this.createMathML('mi', {}, [num]));
-                        mrow.appendChild(this.createMathML('mo', {}, ['|']));
+                    // FIX: Match single letters OR numbers for the angle.
+                    if (angleType !== 'none' && (part.match(/^[nmkt]$/) || part.match(/^\d+$/))) {
+                        mrow.appendChild(this.createAngle(part, angleType));
                     } else {
                         mrow.appendChild(this.createMathML('mi', {}, [part]));
                     }
@@ -184,7 +182,8 @@
 
             const math = this.createMathML('math', { display: 'inline' });
             let mainSymbol = this.applyDecoration(symbol, decoration);
-            const lrElement = this.parseSubscript(lr, { useAngle: true, precedence, lastSurvivor });
+            // Default angle type for generic symbol is annuity
+            const lrElement = this.parseSubscript(lr, { angleType: 'annuity', precedence, lastSurvivor });
             
             let finalSymbol;
             if (ll || ul) {
@@ -234,7 +233,7 @@
 
             const decorationMap = { 'due': 'ddot', 'continuous': 'bar', 'immediate': '' };
             const mainSymbol = this.applyDecoration('a', decorationMap[type]);
-            const lrElement = this.parseSubscript(lr, { useAngle: true });
+            const lrElement = this.parseSubscript(lr, { angleType: 'annuity' });
 
             const tag = frequency ? 'msubsup' : 'msub';
             const symbol = this.createMathML(tag, {}, [
@@ -262,43 +261,42 @@
             const decoration = payment === 'continuous' ? 'bar' : '';
             const math = this.createMathML('math', { display: 'inline' });
             let mainSymbol = this.applyDecoration('A', decoration);
-            const lrElement = this.parseSubscript(lr, {useAngle: true});
+            
+            // Use 'insurance' angle type for term/endowment, otherwise no angle
+            const angleTypeForSubscript = (type === 'term' || type === 'endowment') ? 'insurance' : 'none';
+            const lrElement = this.parseSubscript(lr, { angleType: angleTypeForSubscript });
 
+            // The '1' for term insurance is a special case in the upper-right corner
+            let urElement = frequency ? this.parseUpperRight(frequency) : null;
             if (type === 'term') {
-                const sub = this.createMathML('msubsup', {}, [
+                urElement = this.createMathML('mn', {}, ['1']);
+            }
+
+            const hasSubscript = !!lr;
+            const hasSuperscript = !!urElement;
+
+            let finalSymbol;
+            if (hasSuperscript) {
+                 finalSymbol = this.createMathML('msubsup', {}, [mainSymbol, lrElement, urElement]);
+            } else if (hasSubscript) {
+                 finalSymbol = this.createMathML('msub', {}, [mainSymbol, lrElement]);
+            } else {
+                 finalSymbol = mainSymbol;
+            }
+
+            // Handling pure endowment, which is a special case with a left-side subscript
+            if (type === 'pure-endowment') {
+                 const endowmentSymbol = this.createMathML('mmultiscripts', {}, [
                     mainSymbol,
                     lrElement,
-                    this.createMathML('mn', {}, ['1'])
+                    this.createMathML('none'),
+                    this.createMathML('mprescripts'),
+                    this.createMathML('mi', {}, [term || 'n']),
+                    this.createMathML('none')
                 ]);
-                if (frequency) {
-                    math.appendChild(this.createMathML('msubsup', {}, [
-                        sub,
-                        this.createMathML('none', {}, []),
-                        this.parseUpperRight(frequency)
-                    ]));
-                } else {
-                    math.appendChild(sub);
-                }
-            } else if (type === 'pure-endowment') {
-                const scripts = this.createMathML('mmultiscripts', {}, [
-                    mainSymbol,
-                    lrElement,
-                    this.createMathML('none', {}, []),
-                    this.createMathML('mprescripts', {}, []),
-                    term ? this.createMathML('mi', {}, [term]) : this.createMathML('none', {}, []),
-                    this.createMathML('none', {}, [])
-                ]);
-                 math.appendChild(scripts);
-            } else { // Whole or endowment
-                if (frequency) {
-                    math.appendChild(this.createMathML('msubsup', {}, [
-                        mainSymbol,
-                        lrElement,
-                        this.parseUpperRight(frequency)
-                    ]));
-                } else {
-                    math.appendChild(this.createMathML('msub', {}, [mainSymbol, lrElement]));
-                }
+                 math.appendChild(endowmentSymbol);
+            } else {
+                 math.appendChild(finalSymbol);
             }
             this.appendChild(math);
         }
@@ -329,7 +327,7 @@
             math.appendChild(this.createMathML('mo', {}, ['(']));
 
             const benefitSymbol = this.applyDecoration(benefit, payment === 'continuous' ? 'bar' : '');
-            const lrElement = this.parseSubscript(age, {useAngle: true});
+            const lrElement = this.parseSubscript(age, {angleType: 'insurance'}); // Premiums often relate to insurance benefits
             math.appendChild(this.createMathML('msub', {}, [benefitSymbol, lrElement]));
             
             math.appendChild(this.createMathML('mo', {}, [')']));
@@ -360,7 +358,7 @@
             math.appendChild(this.createMathML('mo', {}, ['(']));
             
             const benefitSymbol = this.applyDecoration(benefit, payment === 'continuous' ? 'bar' : '');
-            const lrElement = this.parseSubscript(age, {useAngle: true});
+            const lrElement = this.parseSubscript(age, {angleType: 'insurance'});
             math.appendChild(this.createMathML('msub', {}, [benefitSymbol, lrElement]));
             
             math.appendChild(this.createMathML('mo', {}, [')']));
